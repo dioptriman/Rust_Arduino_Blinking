@@ -13,8 +13,15 @@ fn potato() -> !{
     let pins = arduino_hal::pins!(peripherals);
 
     let mut led = pins.d13.into_output();
+    let pir = pins.d12.into_floating_input();
+    
     loop{
-        led.toggle();
-        arduino_hal::delay_ms(2000);
+        if pir.is_high(){
+             led.set_high();
+             arduino_hal::delay_ms(2000);
+        } else if pir.is_low(){
+            led.set_low();
+            arduino_hal::delay_ms(2000);
+        }
     }
 }
